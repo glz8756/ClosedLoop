@@ -1,8 +1,6 @@
 import Utils._
 
 import java.io.FileNotFoundException
-import scala.io.Source
-import scala.util.Try
 
 object Elevator extends App {
 
