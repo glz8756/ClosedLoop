@@ -58,9 +58,14 @@ class ElevatorTestSuite extends AnyFunSuite {
     assert(elevatorList.length == 20)
   }
 
-  test("findPath method should return  ") {
+  test("findPath method should return ADDDD ") {
     val result = findPath(elevatorList, "A", 5, 5)
     assert(result == "ADDDD")
+  }
+
+  test("If there is no solution should return empty string ") {
+    val result = findPath(elevatorList, "A", 3, 2)
+    assert(result == "")
   }
 
 }
