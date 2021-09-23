@@ -1,5 +1,7 @@
 import model.Elevators.ElevatorState
 
+import scala.annotation.tailrec
+
 object Utils {
 
   def transform(s: String): String = {
@@ -8,6 +10,7 @@ object Utils {
 
   def loadData(input: List[String]): List[ElevatorState] = {
     val numberOfFloor = input.indices.find(i => input(i) == "").getOrElse(0)
+    @tailrec
     def loadDataTailrec(remaining: List[String], curTime: Int, curFloor: Int, result: List[ElevatorState]): List[ElevatorState] = {
       if (remaining.isEmpty) result.reverse
       else if (remaining.head == "") {
@@ -25,6 +28,7 @@ object Utils {
 
   def findPath(elist: List[ElevatorState], start: String, endFloor: Int, endTime: Int): String = {
     val curFloor = elist.find { e => e.elevator == start && e.time == 1 }.getOrElse(ElevatorState("", 0, 0)).floor
+    @tailrec
     def findPathTailrec(remaining: List[(ElevatorState, List[String])]): String = {
       if (remaining.isEmpty)  ""
       else {
