@@ -19,7 +19,6 @@ object Utils {
       else {
         val transformStr = transform(remaining.head)
         val elist = transformStr.map { s => ElevatorState(s.toString, curFloor, curTime) }.toList
-
         loadDataTailrec(remaining.tail, curTime, curFloor - 1, result ++ elist)
       }
     }
@@ -44,5 +43,4 @@ object Utils {
     }
     findPathTailrec(List((ElevatorState(start, curFloor, 1), List(start))))
   }
-
 }
