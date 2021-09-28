@@ -20,7 +20,7 @@ object Elevator extends App {
   }
   val splitedStr = linesStr.split("\n").toList
   val elevatorList = loadData(splitedStr)
-  val result = findPath(elevatorList, startElevator, destination(0).toInt, destination(1).toInt)
+  val result = findAllPath(elevatorList, startElevator, destination(0).toInt, destination(1).toInt)
   if (result.isEmpty) System.err.println("nothing")  else  println(result)
 
 }

@@ -32,15 +32,36 @@ object Utils {
       if (remaining.isEmpty)  ""
       else {
         val (curElevator, curPath) = remaining.head
+        println(s"($curElevator,${curPath.reverse})")
         if (curElevator.time == endTime && curElevator.floor == endFloor) curPath.reverse.mkString
         else {
-          val nextFloorElevator = elist.find(e=> e.time == curElevator.time + 1 && e.elevator == curElevator.elevator).getOrElse(ElevatorState("", 0, 0))
-          val allElevatorOnCurFloor = elist.filter(e => e.time == nextFloorElevator.time && e.floor == nextFloorElevator.floor)
-          val tuple = allElevatorOnCurFloor.map { e => (e, e.elevator :: curPath) }
+          val floorOfNextStepElevator = elist.find(e=> e.time == curElevator.time + 1 && e.elevator == curElevator.elevator).getOrElse(ElevatorState("", 0, 0))
+          val allElevatorOnNextFloor = elist.filter(e => e.time == floorOfNextStepElevator.time && e.floor == floorOfNextStepElevator.floor)
+          val tuple = allElevatorOnNextFloor.map { e => (e, e.elevator :: curPath) }
           findPathTailrec(remaining.tail ++ tuple)
         }
       }
     }
     findPathTailrec(List((ElevatorState(start, curFloor, 1), List(start))))
+  }
+
+  def findAllPath(elist: List[ElevatorState], start: String, endFloor: Int, endTime: Int): List[String] = {
+    val curFloor = elist.find { e => e.elevator == start && e.time == 1 }.getOrElse(ElevatorState("", 0, 0)).floor
+    @tailrec
+    def findAllPathTailrec(remaining: List[(ElevatorState, List[String])], result: List[String]): List[String] = {
+      if (remaining.isEmpty) result
+      else {
+        val (curElevator, curPath) = remaining.head
+      //  println(s"($curElevator,${curPath.reverse})")
+        if (curElevator.time == endTime && curElevator.floor == endFloor)  findAllPathTailrec(remaining.tail, curPath.reverse.mkString :: result)//curPath.reverse.mkString :: result
+        else {
+          val floorOfNextStepElevator = elist.find(e=> e.time == curElevator.time + 1 && e.elevator == curElevator.elevator).getOrElse(ElevatorState("", 0, 0))
+          val allElevatorOnNextFloor = elist.filter(e => e.time == floorOfNextStepElevator.time && e.floor == floorOfNextStepElevator.floor)
+          val tuple = allElevatorOnNextFloor.map { e => (e, e.elevator :: curPath) }
+          findAllPathTailrec(remaining.tail ++ tuple, result)
+        }
+      }
+    }
+    findAllPathTailrec(List((ElevatorState(start, curFloor, 1), List(start))), List())
   }
 }
